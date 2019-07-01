@@ -8,22 +8,6 @@
 </div>
 
 <div class="row">
-  <% if user_signed_in? %> 
-    <% current_user.histories.reverse.each do |history| %>
-      <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-          <%= link_to(image_tag(history.picture.thumb), history) if history.picture? %>
-          <h3>History de <%= history.user.name %></h3>
-          <div class="caption">
-            <h3><%= history.title %></h3>
-            <small><%= time_ago_in_words(history.created_at) %> ago</small>
-            <p><%= history.content.truncate(150)  %></p>
-            <p> <%= link_to 'Show', history, class: "btn btn-primary" %><%= link_to 'Edit', edit_history_path(history), class: "btn btn-warning" %> <%= link_to 'Destroy', history, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% else %>
     <% @histories.reverse.each do |history| %>
       <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
@@ -33,17 +17,14 @@
             <h3><%= history.title %></h3>
             <small><%= time_ago_in_words(history.created_at) %> ago</small>
             <p><%= history.content.truncate(150)  %></p>
-            <% if user_signed_in? %>
-            <p> <%= link_to 'Show', history, class: "btn btn-primary" %><%= link_to 'Edit', edit_history_path(history), class: "btn btn-warning" %> <%= link_to 'Destroy', history, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
-            
-            <% else %>
-            <p> <%= link_to 'Show', history, class: "btn btn-primary" %></p>
+            <p><%= link_to 'Show', history, class: "btn btn-primary" %></p>
+            <% if user_signed_in? && history.user == current_user%>
+              <p><%= link_to 'Edit', edit_history_path(history), class: "btn btn-warning" %> 
+              <%= link_to 'Destroy', history, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
             <% end %>
-
           </div>
         </div>
       </div>
-    <% end %>
   <% end %>
 </div>
 
